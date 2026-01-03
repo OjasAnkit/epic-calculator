@@ -1,4 +1,5 @@
 const container = document.querySelector("#container")
+
 let num1 = null, num2 = null, currentResult = null
 let currentOperator = ""
 
@@ -208,9 +209,11 @@ function createOperators(buttons) {
 }
 
 function createCalculator() {
+    const calculator = document.createElement("div")
     const buttons = document.createElement("div")
     const display = document.createElement("div")
     
+    calculator.setAttribute("id", "calculator")
     buttons.setAttribute("id", "buttons")
     display.setAttribute("id", "display")
     
@@ -221,15 +224,17 @@ function createCalculator() {
     applyLayoutStyle(display)
     applyLayoutStyle(buttons)
     
-    container.append(display)
-    container.append(buttons)
+    calculator.append(display)
+    calculator.append(buttons)
+
+    calculator.style.display = "flex"
+    calculator.style.flexDirection = "column"
+    calculator.style.border = "2px solid black"
+    calculator.style.borderRadius = "15px"
+    container.append(calculator)
 
     container.style.display = "flex"
-    container.style.flexDirection = "column"
-    container.style.alignItems = "center"
-    container.style.margin = "0px 720px 0px 720px"
-    container.style.border = "2px solid black"
-    container.style.borderRadius = "15px"
+    container.style.alignContent = "flex-start"
 }
 
 createCalculator()
