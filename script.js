@@ -1,6 +1,16 @@
 const container = document.querySelector("#container")
+// container.
 
-function applyStyle(div) {
+function applyLayoutStyle(div) {
+    div.style.padding = "15px"
+    div.style.display = "flex"
+    div.style.width = "410px"
+    div.style.border = "2px solid black"
+    div.style.backgroundColor = "#e1e1e1ff"
+    div.style.justifyContent = "space-between"
+}
+
+function applyButtonStyle(div) {
     div.style.width = "90px"
     div.style.height = "90px"
     div.style.border = "2px solid black"
@@ -14,7 +24,24 @@ function applyStyle(div) {
 }
 
 function createDisplay(display) {
+    const screen = document.createElement("div")
+    screen.setAttribute("id", "screen")
+    
+    screen.style.padding = "0px 5px 0px 5px"
+    screen.style.display = "flex"
+    screen.style.justifyContent = "flex-end"
+    screen.style.alignItems = "center"
+    screen.style.backgroundColor = "white"
+    screen.style.width = "410px"
+    screen.style.height = "90px"
+    screen.style.border = "2px solid black"
+    screen.style.fontFamily = ""
+    screen.style.fontSize = "50px"
+    screen.style.fontStyle = "italic"
+    screen.textContent = "26,53,646.08"
 
+    display.append(screen)
+    display.style.margin = "10px"
 }
 
 function createDigits(buttons) {
@@ -39,7 +66,7 @@ function createDigits(buttons) {
         digit.setAttribute("id", `${i}`)
         digit.textContent = `${i}`
 
-        applyStyle(digit)
+        applyButtonStyle(digit)
 
         digits.append(digit)
     }
@@ -47,8 +74,8 @@ function createDigits(buttons) {
     clr.textContent = "C"
     calc.textContent = "="
 
-    applyStyle(clr)
-    applyStyle(calc)
+    applyButtonStyle(clr)
+    applyButtonStyle(calc)
 
     clr.style.backgroundColor = "#fc5f53"
     calc.style.backgroundColor = "#fcef5bff"
@@ -92,12 +119,13 @@ function createOperators(buttons) {
                 break
             }
         }
-        applyStyle(operator)
+        applyButtonStyle(operator)
 
         operators.append(operator)
     }
 
     buttons.append(operators)
+    buttons.style.margin = "10px"
 }
 
 function createCalculator() {
@@ -111,15 +139,15 @@ function createCalculator() {
     createDigits(buttons)
     createOperators(buttons)
 
-    buttons.style.padding = "15px"
-    buttons.style.display = "flex"
-    buttons.style.width = "410px"
-    buttons.style.border = "2px solid black"
-    buttons.style.backgroundColor = "#f3f3f3ff"
-    buttons.style.justifyContent = "space-between"
+    applyLayoutStyle(display)
+    applyLayoutStyle(buttons)
     
     container.append(display)
     container.append(buttons)
+
+    container.style.display = "flex"
+    container.style.flexDirection = "column"
+    container.style.alignItems = "center"
 }
 
 createCalculator()
