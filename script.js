@@ -35,7 +35,6 @@ function calculate(e) {
     screen.textContent = currentResult.toLocaleString("en-IN")
     num1 = currentResult
     num2 = null
-    console.log(e.target);
     currentOperator = (e.target.id == "calculate" ? "" : e.target.textContent)
     logCurrent()
 }
@@ -228,6 +227,9 @@ function createCalculator() {
     container.style.display = "flex"
     container.style.flexDirection = "column"
     container.style.alignItems = "center"
+    container.style.margin = "0px 720px 0px 720px"
+    container.style.border = "2px solid black"
+    container.style.borderRadius = "15px"
 }
 
 createCalculator()
