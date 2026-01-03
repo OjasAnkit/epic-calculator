@@ -1,5 +1,44 @@
 const container = document.querySelector("#container")
-// container.
+let num1 = null, num2 = null, currentResult = null
+let currentOperator = ""
+
+function logCurrent() {
+    console.log(`num1: ${num1} | num2: ${num2} | current operator: ${currentOperator} | current result: ${currentResult}`);
+}
+
+function resetCalculator() {
+    const screen = document.querySelector("#screen")
+    screen.textContent = 0
+    num1 = null
+    num2 = null
+    currentResult = null
+    currentOperator = ""
+}
+
+function calculate(e) {
+    const screen = document.querySelector("#screen")
+    switch(currentOperator) {
+        case "+": currentResult = num1 + num2; break;
+        case "—": currentResult = num1 - num2; break;
+        case "x": currentResult = num1 * num2; break;
+        case "/": {
+            if(num2 == 0) {
+                alert("Can't divide by 0!!")
+                resetCalculator()
+                return
+            } else {
+                currentResult = Math.round((num1 * 100) / num2) / 100
+                break;
+            }
+        }
+    }
+    screen.textContent = currentResult.toLocaleString("en-IN")
+    num1 = currentResult
+    num2 = null
+    console.log(e.target);
+    currentOperator = (e.target.id == "calculate" ? "" : e.target.textContent)
+    logCurrent()
+}
 
 function applyLayoutStyle(div) {
     div.style.padding = "15px"
@@ -35,10 +74,10 @@ function createDisplay(display) {
     screen.style.width = "410px"
     screen.style.height = "90px"
     screen.style.border = "2px solid black"
-    screen.style.fontFamily = ""
+    screen.style.fontFamily = "Helvetica"
     screen.style.fontSize = "50px"
-    screen.style.fontStyle = "italic"
-    screen.textContent = "26,53,646.08"
+    screen.style.overflow = "auto"
+    screen.textContent = "0"
 
     display.append(screen)
     display.style.margin = "10px"
@@ -69,6 +108,24 @@ function createDigits(buttons) {
         applyButtonStyle(digit)
 
         digits.append(digit)
+
+        digit.addEventListener("click", (e) => {
+            const screen = document.querySelector("#screen")
+            let updatedText = ""
+            if(num1 == null || currentResult != null) {
+                updatedText = `${i}`
+                num1 = i
+                currentResult = null
+            } else if(currentOperator == "") {
+                updatedText = screen.textContent.replace(/,/g, "") + `${i}`
+                num1 = Number(updatedText)
+            } else {
+                updatedText = (num2 == null ? "" : screen.textContent.replace(/,/g, "")) + `${i}`
+                num2 = Number(updatedText)
+            }
+            logCurrent()
+            screen.textContent = Number(updatedText).toLocaleString("en-IN")
+        })
     }
 
     clr.textContent = "C"
@@ -79,6 +136,15 @@ function createDigits(buttons) {
 
     clr.style.backgroundColor = "#fc5f53"
     calc.style.backgroundColor = "#fcef5bff"
+
+    clr.addEventListener("click", resetCalculator)
+    calc.addEventListener("click", (e) => {
+        if(num1 != null && num2 != null && currentOperator != "") {
+            calculate(e)
+        } else {
+            alert("You have not selected two numbers and an operator!")
+        }
+    })
 
     digits.append(clr)
     digits.append(calc)
@@ -121,6 +187,20 @@ function createOperators(buttons) {
         }
         applyButtonStyle(operator)
 
+        operator.addEventListener("click", (e) => {
+            if(num1 != null) {
+                if(num2 != null) {
+                    calculate(e)
+                } else {
+                    currentOperator = operator.textContent
+                }
+                currentResult = null
+                logCurrent()
+            } else {
+                alert("Please select a number first!")
+            }
+        })
+
         operators.append(operator)
     }
 
@@ -151,7 +231,3 @@ function createCalculator() {
 }
 
 createCalculator()
-// 7 8 9   + --> number - 1 / 3 == 2
-// 4 5 6   - 
-// 3 2 1   *
-// 0 C =   / 
